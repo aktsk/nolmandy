@@ -1,0 +1,7 @@
+package: github.com/aktsk/nolmandy
+import:
+- package: github.com/fullsailor/pkcs7
+- package: github.com/rakyll/statik
+  version: ~0.1.1
+  subpackages:
+  - fs
