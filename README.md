@@ -1,6 +1,6 @@
 # Nolmandy
 
-Nolmandy is an Apple receipt procssing server. You can use nolmandy instead of https://sandbox.itunes.apple.com/verifyReceipt .
+Nolmandy is an Apple receipt processing server. You can use nolmandy instead of https://sandbox.itunes.apple.com/verifyReceipt .
 
 Also you can use nolmandy as a receipt processing library.
 
