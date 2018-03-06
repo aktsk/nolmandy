@@ -45,7 +45,11 @@ import (
 )
 
 func main() {
-	rcpt, _ := receipt.ParseWithAppleRootCert("MIIT6QYJK...")
+	rcpt, err := receipt.ParseWithAppleRootCert("MIIT6QYJK...")
+	if err != nil {
+		log.Fatal("Parse error")
+	}
+
 	result, err := rcpt.Validate() // Validate() does nothing currently ...
 	if err != nil {
 		log.Fatal("Validation error")
