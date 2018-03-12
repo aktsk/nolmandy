@@ -17,11 +17,12 @@ type Request struct {
 
 // Serve is for serving receipt vefirification
 func Serve(port int) {
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/", Handler)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
+// Handler handles HTTP requests
+func Handler(w http.ResponseWriter, r *http.Request) {
 	var request Request
 	json.NewDecoder(r.Body).Decode(&request)
 
