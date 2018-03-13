@@ -61,6 +61,15 @@ func main() {
 }
 ```
 
+### Deploy nolmandy server to Google App Engine
+
+You can run nolmandy server on Google App Engine.
+
+```
+cd appengine/app
+make deploy
+```
+
 ----
 
 ## Contributing
