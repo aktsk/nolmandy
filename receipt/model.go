@@ -14,15 +14,71 @@ func (d date) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + t + `"`), nil
 }
 
+func (d *date) UnmarshalJSON(b []byte) error {
+	dateString, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+
+	t, err := time.Parse("2006-01-02 15:04:05 Etc/GMT", dateString)
+	if err != nil {
+		return err
+	}
+	*d = date(t)
+
+	return nil
+}
+
 func (d dateMS) MarshalJSON() ([]byte, error) {
 	t := strconv.FormatInt(time.Time(d).Unix()*1000, 10)
 	return []byte(`"` + t + `"`), nil
 }
 
+func (ms *dateMS) UnmarshalJSON(b []byte) error {
+	msString, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+
+	sec, err := strconv.ParseInt(msString, 10, 64)
+	if err != nil {
+		return err
+	}
+
+	t := time.Unix(sec/1000, 0)
+	*ms = dateMS(t)
+
+	return nil
+}
+
 func (d datePST) MarshalJSON() ([]byte, error) {
-	loc, _ := time.LoadLocation("America/Los_Angeles")
+	loc, err := time.LoadLocation("America/Los_Angeles")
+	if err != nil {
+		return nil, err
+	}
+
 	t := time.Time(d).In(loc).Format("2006-01-02 15:04:05 America/Los_Angeles")
 	return []byte(`"` + t + `"`), nil
+}
+
+func (pst *datePST) UnmarshalJSON(b []byte) error {
+	pstString, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+
+	loc, err := time.LoadLocation("America/Los_Angeles")
+	if err != nil {
+		return err
+	}
+
+	t, err := time.ParseInLocation("2006-01-02 15:04:05 America/Los_Angeles", pstString, loc)
+	if err != nil {
+		return err
+	}
+	*pst = datePST(t)
+
+	return nil
 }
 
 // Receipt for an application
