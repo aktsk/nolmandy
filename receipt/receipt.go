@@ -262,11 +262,11 @@ func parseInApp(data []byte) (*InApp, error) {
 			}
 			inApp.CancellationDate.Date = date(t)
 		case 1719:
-			var intRoprice int
-			if _, err = asn1.Unmarshal(ra.Value, &intRoprice); err != nil {
+			var introPrice int
+			if _, err = asn1.Unmarshal(ra.Value, &introPrice); err != nil {
 				return nil, err
 			}
-			inApp.IsInIntroPrice = (intRoprice != 0)
+			inApp.IsInIntroPrice = (introPrice != 0)
 		}
 	}
 
