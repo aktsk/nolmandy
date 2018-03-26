@@ -24,7 +24,7 @@ fmt: setup
 	goimports -w $$(glide nv -x)
 
 build: deps
-	go build -o bin/$(NAME) cmd/nolmandy/nolmandy.go
+	go build -o bin/$(NAME)-server cmd/nolmandy/nolmandy_server.go
 
 clean:
 	rm bin/$(NAME)
