@@ -21,7 +21,7 @@ make
 Run nolmandy server.
 
 ```
-bin/nolmandy -port 8000
+bin/nolmandy-server -port 8000
 ```
 
 Post base64 encoded receipt data to nolmandy server.
