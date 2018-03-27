@@ -31,6 +31,12 @@ curl -s -H 'Content-Type:application/json' -d '{ "receipt-data": "MIIeWQYJK..." 
   http://localhost:8000/
 ```
 
+You can use your own certificate instead of Apple certificate.
+
+```
+bin/nolmandy-server -certFile cert.pem
+```
+
 ### As a validation library
 
 You can parse base64 encoded receipt data and validate it.
@@ -61,6 +67,31 @@ func main() {
 }
 ```
 
+You can use your own certificate instead of Apple root certificate like this.
+
+```go
+func main() {
+	certFile, _ := os.Open("cert.pem")
+	certPEM, _ := ioutil.ReadAll(certFile)
+	certDER, _ := pem.Decode(certPEM)
+	cert, _ = x509.ParseCertificate(certDER.Bytes)
+
+	rcpt, err := receipt.Parse(cert, "MIIT6QYJK...")
+	if err != nil {
+		log.Fatal("Parse error")
+	}
+
+	result, err := rcpt.Validate() // Validate() does nothing currently ...
+	if err != nil {
+		log.Fatal("Validation error")
+	}
+
+	if result.Status == 0 {
+		log.Println("Validation success")
+	}
+}
+```
+
 ### Deploy nolmandy server to Google App Engine
 
 You can run nolmandy server on Google App Engine.
@@ -69,6 +100,8 @@ You can run nolmandy server on Google App Engine.
 cd appengine/app
 make deploy
 ```
+
+If you'd like to use your own certificate instead of Apple certificate, put a certificate file as `cert.pem` under appengine/app directory.
 
 ----
 
