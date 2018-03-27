@@ -124,4 +124,4 @@ See [LICENSE](LICENSE).
 ## See Also
 
 * [Receipt Validation Programming Guide](https://developer.apple.com/library/content/releasenotes/General/ValidateAppStoreReceipt/Introduction.html)
-
+* [aktsk/kalvados: Apple receipt generator for testing](https://github.com/aktsk/kalvados)
