@@ -118,7 +118,28 @@ cd appengine/app
 make deploy
 ```
 
-If you'd like to use your own certificate instead of Apple certificate, put a certificate file as `cert.pem` under appengine/app directory.
+If you'd like to use your own certificate instead of Apple certificate, put a certificate file as `cert.pem` under appengine/app directory. Or you can set your certificate in app.yaml like this.
+
+```yaml
+env_variables:
+  # It seems GAE/Go could not handle environment variables
+  # that has return code.So use ">-" to replace return code
+  # with white space
+  CERTIFICATE: >-
+    -----BEGIN CERTIFICATE-----
+    MIIB3TCCAUagAwIBAgIEcotswjANBgkqhkiG9w0BAQsFADAoMRAwDgYDVQQKEwdB
+    Y21lIENvMRQwEgYDVQQDEwtUZXN0IElzc3VlcjAgFw0xODA0MDIwNDA2MjlaGA8z
+    ODQzMDQwMjA0MDYyOVowKDEQMA4GA1UEChMHQWNtZSBDbzEUMBIGA1UEAxMLVGVz
+    dCBJc3N1ZXIwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMb89jkLRDjud2Xt
+    tYoXscWCGTKAr+TYv7dwk7YXqabv4bhH5X15sbg9cp5UWZzu7ygoX4+N/48Aa/AZ
+    Sh8ppQZYpa73ximUesF8W+ZDXeOsexoPuRyXKltjXX/eLklBldVBB8Weyip4WhmG
+    TCguTUW5eFPtseIEBHxto12jB6gnAgMBAAGjEjAQMA4GA1UdDwEB/wQEAwICpDAN
+    BgkqhkiG9w0BAQsFAAOBgQC+abUGkSNC5n6r4TjbCrAHZcFI0yCcK38fS2g9c7lb
+    VcvltNox2SWL9oyjybdzm1iZoVtsHXuQ8RKszdVKCh7N1RUOGDgtuwfP2XnKCKoP
+    W9VfLKZ+Y4YnouEZBUjsS39dgLC2EJ66e3kWfCrR6HNsSWwE0A3mVnfNUwLvgtH/
+    QQ==
+    -----END CERTIFICATE-----
+```
 
 ----
 
