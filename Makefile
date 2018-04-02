@@ -11,11 +11,11 @@ deps: setup
 	glide install
 
 test: deps lint
-	go test $$(glide novendor)
-	go test -race $$(glide novendor)
+	go test $$(glide novendor | grep -v cmd)
+	go test -race $$(glide novendor | grep -v cmd)
 
 lint: setup
-	go vet $$(glide novendor)
+	go vet $$(glide novendor | grep -v cmd)
 	for pkg in $$(glide novendor -x); do \
 		golint -set_exit_status $$pkg || exit $$?; \
 	done
