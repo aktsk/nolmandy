@@ -22,6 +22,7 @@ func Serve(port int, cert *x509.Certificate) {
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
 }
 
+// Parse parsed receipt-data in a request
 func Parse(cert *x509.Certificate) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var request Request
