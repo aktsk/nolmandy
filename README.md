@@ -1,4 +1,4 @@
-# Nolmandy
+# Nolmandy [![Build Status](https://travis-ci.org/aktsk/nolmandy.svg?branch=master)](https://travis-ci.org/aktsk/nolmandy)
 
 Nolmandy is an Apple receipt processing server. You can use nolmandy instead of https://sandbox.itunes.apple.com/verifyReceipt .
 
