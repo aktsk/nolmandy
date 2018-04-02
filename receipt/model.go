@@ -34,7 +34,7 @@ func (d dateMS) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + t + `"`), nil
 }
 
-func (ms *dateMS) UnmarshalJSON(b []byte) error {
+func (d *dateMS) UnmarshalJSON(b []byte) error {
 	msString, err := strconv.Unquote(string(b))
 	if err != nil {
 		return err
@@ -46,7 +46,7 @@ func (ms *dateMS) UnmarshalJSON(b []byte) error {
 	}
 
 	t := time.Unix(sec/1000, 0)
-	*ms = dateMS(t)
+	*d = dateMS(t)
 
 	return nil
 }
@@ -61,7 +61,7 @@ func (d datePST) MarshalJSON() ([]byte, error) {
 	return []byte(`"` + t + `"`), nil
 }
 
-func (pst *datePST) UnmarshalJSON(b []byte) error {
+func (d *datePST) UnmarshalJSON(b []byte) error {
 	pstString, err := strconv.Unquote(string(b))
 	if err != nil {
 		return err
@@ -76,7 +76,7 @@ func (pst *datePST) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return err
 	}
-	*pst = datePST(t)
+	*d = datePST(t)
 
 	return nil
 }
