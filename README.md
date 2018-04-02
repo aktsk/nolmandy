@@ -10,13 +10,30 @@ Also you can use nolmandy as a receipt processing library.
 
 ## Usage
 
-### As a validation server
+### Compile nolmandy
 
-Compile nolmandy.
+Run make command.
 
 ```
 make
 ```
+
+### As a receipt validation command line tool
+
+Run nolmandy command to validate a receipt by Apple Root certificate.
+
+```
+cat receipt | bin/nolmandy
+```
+
+You can validate a certificate by your own certificate.
+
+```
+cat receipt | bin/nolmandy -certFile cert.pem
+```
+
+
+### As a validation server
 
 Run nolmandy server.
 
