@@ -16,7 +16,7 @@ type Request struct {
 	Password    string `json:"password"`
 }
 
-// Serve is for serving receipt vefirification
+// Serve is for serving receipt verification
 func Serve(port int, cert *x509.Certificate) {
 	http.HandleFunc("/", Parse(cert))
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", port), nil))
