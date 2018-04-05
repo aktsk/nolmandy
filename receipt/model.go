@@ -102,7 +102,7 @@ type Receipt struct {
 	OriginalPurchaseDate
 }
 
-// InApp represents the recipt for in-app purchase
+// InApp represents the receipt for in-app purchase
 // https://developer.apple.com/library/content/releasenotes/General/ValidateAppStoreReceipt/Chapters/ReceiptFields.html#//apple_ref/doc/uid/TP40010573-CH106-SW12
 type InApp struct {
 	Quantity              int64  `json:"quantity,string"`
@@ -129,7 +129,7 @@ type CreationDate struct {
 	DatePST datePST `json:"receipt_creation_date_pst"`
 }
 
-// RequestDate is the date when vefiry request was issued
+// RequestDate is the date when verify request was issued
 type RequestDate struct {
 	Date    date    `json:"request_date"`
 	DateMS  dateMS  `json:"request_date_ms"`

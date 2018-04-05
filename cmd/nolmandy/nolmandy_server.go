@@ -16,7 +16,7 @@ func main() {
 	var certFileName string
 
 	flag.IntVar(&port, "port", 8000, "Port to listen")
-	flag.StringVar(&certFileName, "certFile", "", "Cetificate file")
+	flag.StringVar(&certFileName, "certFile", "", "Certificate file")
 
 	flag.Parse()
 
