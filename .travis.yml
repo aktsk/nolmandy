@@ -1,8 +1,15 @@
 language: go
 
+before_script:
+  - echo "machine api.github.com login mizzy password $GITHUB_ACCESS_TOKEN" > ~/.netrc
+  
 script:
   - make test
 
 go:
-  - "1.10.x"
+  - 1.10.x
   - master
+
+env:
+  global:
+    secure: ZpLtLnnbx+oDZqLbGgbQYrZtTzwFwpouwekAslh83HVoVPIaYzi9fmSIJFOxN3sMOS5zQCbq7mOlB+r8hPmjdlr8PAPeTnGlCHUUFA7BTlVT39fy5s+HsICF+gq16DM+1TWu3udGBmgt3gvWhPp/+9GJklAa5d76J8idd68brBL2fIUxvBjZ9ReqM8KOAeIE3XuzLeGNO9CWtmpDDf4o83Dsd00eavxy8gf9BR0WQxlKG5xtNxUg/sFu18An/Y/JaQYIfkGemwnerD6B/cb+mYVh/zs18kkNfEPxy8chM0/ABrz85P9OQfRp2hgkPWA0Zxf+YvKMYYhTsYSTlqBYRWam6wyZ2NdzWO+YvZ5O1eD00GhFaIjVa5Z6jJRwCIYvnSDCMAovdxWJakQpl3O5/XY2R4M3X50H3ENRvg/si2w1AqS6CAj/KOVlMFR9GX+1pCtowqo41kRT8PcdwXg6lnFXbTDjpC2rWhtFrlTVt3vJP1QQ0qGsY2kWPxksT4wd8yaNW1UBtens0iSyYbJKVlQ11zf4nol88exqnEPDovyHQx+Y0A91KvalozxCTFEYsBAC0HbZugNwZwRg8aDxsWmPSQXBc0IbCsfHPdI7bnINTSrYrLVGgqp1xgHNuoIJms6ZV/bJ2N6T63wR5Hek25adTb1lsuc7BHVk3l+6Ulo=
