@@ -10,35 +10,39 @@ Also you can use nolmandy as a receipt processing library.
 
 ## Usage
 
-### Compile nolmandy
-
-Run make command.
-
-```
-make
-```
-
 ### As a receipt validation command line tool
+
+Install `nolmandy` command.
+
+```
+go get github.com/aktsk/nolmandy/cmd/nolmandy
+```
 
 Run nolmandy command to validate a receipt by Apple Root certificate.
 
 ```
-cat receipt | bin/nolmandy
+cat receipt | nolmandy
 ```
 
 You can validate a certificate by your own certificate.
 
 ```
-cat receipt | bin/nolmandy -certFile cert.pem
+cat receipt | nolmandy -certFile cert.pem
 ```
 
 
 ### As a validation server
 
+Install `nolmandy-server` command.
+
+```
+go get github.com/aktsk/nolmandy/cmd/nolmandy-server
+```
+
 Run nolmandy server.
 
 ```
-bin/nolmandy-server -port 8000
+nolmandy-server -port 8000
 ```
 
 Post base64 encoded receipt data to nolmandy server.
@@ -51,7 +55,7 @@ curl -s -H 'Content-Type:application/json' -d '{ "receipt-data": "MIIeWQYJK..." 
 You can use your own certificate instead of Apple certificate.
 
 ```
-bin/nolmandy-server -certFile cert.pem
+nolmandy-server -certFile cert.pem
 ```
 
 ### As a validation library

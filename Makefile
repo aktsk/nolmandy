@@ -19,8 +19,8 @@ fmt: setup
 	goimports -w .
 
 build:
-	vgo build -o bin/$(NAME) cmd/nolmandy/nolmandy.go
-	vgo build -o bin/$(NAME)-server cmd/nolmandy/nolmandy_server.go
+	vgo build -o bin/$(NAME) cmd/nolmandy/main.go
+	vgo build -o bin/$(NAME)-server cmd/nolmandy-server/main.go
 
 clean:
 	rm bin/$(NAME)
