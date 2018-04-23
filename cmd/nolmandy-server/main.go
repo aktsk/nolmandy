@@ -4,21 +4,36 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
 
 	"github.com/aktsk/nolmandy/server"
+	"github.com/aktsk/nolmandy/version"
 )
 
+const name = "nolmandy-server"
+
+var GitCommit string
+
 func main() {
-	var port int
-	var certFileName string
+	var (
+		port         int
+		certFileName string
+		versionFlag  bool
+	)
 
 	flag.IntVar(&port, "port", 8000, "Port to listen")
 	flag.StringVar(&certFileName, "certFile", "", "Certificate file")
+	flag.BoolVar(&versionFlag, "version", false, "print version string")
 
 	flag.Parse()
+
+	if versionFlag {
+		fmt.Printf("%s version: %s (rev: %s)", name, version.Get(), GitCommit)
+		os.Exit(0)
+	}
 
 	var cert *x509.Certificate
 
