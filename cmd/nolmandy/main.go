@@ -11,14 +11,28 @@ import (
 	"os"
 
 	"github.com/aktsk/nolmandy/receipt"
+	"github.com/aktsk/nolmandy/version"
 )
 
+const name = "nolmandy"
+
+var GitCommit string
+
 func main() {
-	var certFileName string
+	var (
+		certFileName string
+		versionFlag  bool
+	)
 
 	flag.StringVar(&certFileName, "certFile", "", "Cetificate file")
+	flag.BoolVar(&versionFlag, "version", false, "print version string")
 
 	flag.Parse()
+
+	if versionFlag {
+		fmt.Printf("%s version: %s (rev: %s)", name, version.Get(), GitCommit)
+		os.Exit(0)
+	}
 
 	stdin := bufio.NewScanner(os.Stdin)
 	stdin.Scan()
