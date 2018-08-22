@@ -28,27 +28,22 @@ func Parse(cert *x509.Certificate) func(http.ResponseWriter, *http.Request) {
 		var request Request
 		json.NewDecoder(r.Body).Decode(&request)
 
-		parsedReceipt := &receipt.Receipt{}
+		var rcpt *receipt.Receipt
+		var err error
 
 		if cert == nil {
-			rcpt, err := receipt.ParseWithAppleRootCert(request.ReceiptData)
-			if err != nil {
-				log.Print(err)
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			parsedReceipt = rcpt
+			rcpt, err = receipt.ParseWithAppleRootCert(request.ReceiptData)
 		} else {
-			rcpt, err := receipt.Parse(cert, request.ReceiptData)
-			if err != nil {
-				log.Print(err)
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
-			parsedReceipt = rcpt
+			rcpt, err = receipt.Parse(cert, request.ReceiptData)
 		}
 
-		result, err := parsedReceipt.Validate()
+		if err != nil {
+			log.Print(err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		result, err := rcpt.Validate()
 
 		resultBody, err := json.Marshal(result)
 		if err != nil {
