@@ -29,29 +29,40 @@ func Parse(cert *x509.Certificate) func(http.ResponseWriter, *http.Request) {
 		json.NewDecoder(r.Body).Decode(&request)
 
 		var rcpt *receipt.Receipt
+		var result receipt.Result
 		var err error
 
 		if cert == nil {
-			rcpt, err = receipt.ParseWithAppleRootCert(request.ReceiptData)
+			cert, err = receipt.GetAppleRootCert()
+			if err != nil {
+				log.Print(err)
+				result.Status = 21100
+				result.IsRetryable = true
+				writeResult(w, result)
+				return
+			}
+		}
+
+		rcpt, err = receipt.Parse(cert, request.ReceiptData)
+
+		if err != nil {
+			log.Print(err)
+			result.Status = 21002
 		} else {
-			rcpt, err = receipt.Parse(cert, request.ReceiptData)
+			result, err = rcpt.Validate()
 		}
 
-		if err != nil {
-			log.Print(err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		result, err := rcpt.Validate()
-
-		resultBody, err := json.Marshal(result)
-		if err != nil {
-			log.Print(err)
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		w.Write(resultBody)
+		writeResult(w, result)
 	}
+}
+
+func writeResult(w http.ResponseWriter, result receipt.Result) {
+	resultBody, err := json.Marshal(result)
+	if err != nil {
+		log.Print(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(resultBody)
 }

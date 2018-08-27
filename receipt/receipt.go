@@ -15,15 +15,14 @@ import (
 // Result is the validation result
 type Result struct {
 	Status            int      `json:"status"`
-	Environment       string   `json:"environment"`
-	Receipt           *Receipt `json:"receipt"`
+	Environment       string   `json:"environment,omitempty"`
+	Receipt           *Receipt `json:"receipt,omitempty"`
 	LatestReceiptInfo []InApp  `json:"latest_receipt_info,omitempty"`
 	LatestReceipt     string   `json:"latest_receipt,omitempty"`
 	IsRetryable       bool     `json:"is-retryable,omitempty"`
 }
 
-// ParseWithAppleRootCert parses base 64 encoded receipt data with Apple Inc Root Certificate
-func ParseWithAppleRootCert(data string) (*Receipt, error) {
+func GetAppleRootCert() (*x509.Certificate, error) {
 	statikFS, err := fs.New()
 	if err != nil {
 		return nil, err
@@ -44,7 +43,16 @@ func ParseWithAppleRootCert(data string) (*Receipt, error) {
 		return nil, err
 	}
 
-	return Parse(rootCert, data)
+	return rootCert, nil
+}
+
+// ParseWithAppleRootCert parses base 64 encoded receipt data with Apple Inc Root Certificate
+func ParseWithAppleRootCert(data string) (*Receipt, error) {
+	cert, err := GetAppleRootCert()
+	if err != nil {
+		return nil, err
+	}
+	return Parse(cert, data)
 }
 
 // Parse parsed base 64 encoded receipt data with a given certificate
