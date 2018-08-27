@@ -13,7 +13,29 @@ import (
 	"github.com/aktsk/nolmandy/receipt"
 )
 
-func TestServer(t *testing.T) {
+func TestInvalidReceipt(t *testing.T) {
+	result := request(t, "invalid receipt")
+
+	if result.Status != 21002 {
+		t.Fatalf("Status should be 21002, not %d", result.Status)
+	}
+}
+
+func TestValidReceipt(t *testing.T) {
+	result := request(t, receiptData)
+
+	if result.Status != 0 {
+		t.Fatalf("Status should be 0, not %d", result.Status)
+	}
+
+	rcpt := result.Receipt
+
+	if rcpt.ReceiptType != "ProductionSandbox" {
+		t.Fatalf("Wrong receipt_type: %s", rcpt.ReceiptType)
+	}
+}
+
+func request(t *testing.T, data string) receipt.Result {
 	certDER, _ := pem.Decode([]byte(certificate))
 	cert, err := x509.ParseCertificate(certDER.Bytes)
 	if err != nil {
@@ -23,7 +45,7 @@ func TestServer(t *testing.T) {
 	s := httptest.NewServer(http.HandlerFunc(Parse(cert)))
 	defer s.Close()
 
-	req := Request{ReceiptData: receiptData}
+	req := Request{ReceiptData: data}
 	reqBody, err := json.Marshal(req)
 	if err != nil {
 		t.Fatal(err)
@@ -42,15 +64,7 @@ func TestServer(t *testing.T) {
 	var result receipt.Result
 	json.Unmarshal(respBody, &result)
 
-	if result.Status != 0 {
-		t.Fatal("Status is not 0")
-	}
-
-	rcpt := result.Receipt
-
-	if rcpt.ReceiptType != "ProductionSandbox" {
-		t.Fatalf("Wrong receipt_type: %s", rcpt.ReceiptType)
-	}
+	return result
 }
 
 var receiptData = `
