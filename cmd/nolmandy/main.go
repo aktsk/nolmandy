@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"crypto/x509"
 	"encoding/json"
 	"encoding/pem"
@@ -34,9 +33,12 @@ func main() {
 		os.Exit(0)
 	}
 
-	stdin := bufio.NewScanner(os.Stdin)
-	stdin.Scan()
-	receiptData := string(stdin.Bytes())
+	stdin, err := ioutil.ReadAll(os.Stdin)
+	if err != nil {
+		os.Stderr.WriteString(err.Error())
+		os.Exit(1)
+	}
+	receiptData := string(stdin)
 
 	var rcpt *receipt.Receipt
 	if certFileName != "" {
