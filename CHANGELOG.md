@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.1.3](https://github.com/aktsk/nolmandy/compare/v0.1.2...v0.1.3) (2023-11-20)
+
+* update AppleIncRootCertificate.cer [#24](https://github.com/aktsk/nolmandy/pull/24) ([azonti](https://github.com/azonti))
+* Read receipt from stdin by ioutil.ReadAll [#23](https://github.com/aktsk/nolmandy/pull/23) ([sachaos](https://github.com/sachaos))
+
 ## [v0.1.2](https://github.com/aktsk/nolmandy/compare/v0.1.1...v0.1.2) (2018-08-27)
 
 * Modify how to return server response [#22](https://github.com/aktsk/nolmandy/pull/22) ([mizzy](https://github.com/mizzy))
