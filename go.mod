@@ -4,6 +4,7 @@ go 1.21.4
 
 require (
 	github.com/fullsailor/pkcs7 v0.0.0-20180223002317-1d5002593acb
+	github.com/guregu/null/v5 v5.0.0
 	github.com/rakyll/statik v0.1.1
 )
 
@@ -40,14 +41,14 @@ require (
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/x-motemen/gobump v0.2.0 // indirect
 	github.com/xi2/xz v0.0.0-20171230120015-48954b6210f8 // indirect
-	golang.org/x/crypto v0.15.0 // indirect
+	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
-	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.18.0 // indirect
+	golang.org/x/mod v0.17.0 // indirect
+	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20220909003341-f21342109be1 // indirect
-	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.14.0 // indirect
-	golang.org/x/tools v0.15.0 // indirect
+	golang.org/x/sync v0.7.0 // indirect
+	golang.org/x/sys v0.20.0 // indirect
+	golang.org/x/tools v0.21.0 // indirect
 	golang.org/x/vgo v0.0.0-20230819233735-58d495dcb2ce // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect

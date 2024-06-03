@@ -2,9 +2,12 @@ package receipt
 
 import (
 	"crypto/x509"
+	"encoding/json"
 	"encoding/pem"
 	"testing"
 	"time"
+
+	"github.com/guregu/null/v5"
 )
 
 func TestParseAndValidate(t *testing.T) {
@@ -28,7 +31,7 @@ func TestParseAndValidate(t *testing.T) {
 	}
 
 	creationDate := time.Unix(1518284220, 0)
-	date := time.Time(rcpt.CreationDate.Date)
+	date := null.Time(rcpt.CreationDate.Date).Time
 	if date.UTC() != creationDate.UTC() {
 		t.Fatalf("Wrong creation_date: %v", date)
 	}
@@ -48,7 +51,7 @@ func TestParseAndValidate(t *testing.T) {
 	}
 
 	purchaseDate := time.Unix(1503544635, 0)
-	date = time.Time(inApp.PurchaseDate.Date)
+	date = null.Time(inApp.PurchaseDate.Date).Time
 	if date.UTC() != purchaseDate.UTC() {
 		t.Fatalf("Wrong purchase_date: %v", date)
 	}
@@ -58,7 +61,7 @@ func TestParseAndValidate(t *testing.T) {
 	}
 
 	originalPurchaseDate := time.Unix(1500261436, 0)
-	date = time.Time(inApp.OriginalPurchaseDate.Date)
+	date = null.Time(inApp.OriginalPurchaseDate.Date).Time
 	if date.UTC() != originalPurchaseDate.UTC() {
 		t.Fatalf("Wrong original_purchase_date: %v", date)
 	}
@@ -72,9 +75,13 @@ func TestParseAndValidate(t *testing.T) {
 	}
 
 	originalPurchaseDate = time.Unix(1499441767, 0)
-	date = time.Time(rcpt.OriginalPurchaseDate.Date)
+	date = null.Time(rcpt.OriginalPurchaseDate.Date).Time
 	if date.UTC() != originalPurchaseDate.UTC() {
 		t.Fatalf("Wrong original_purchase_date: %v", date)
+	}
+
+	if inApp.CancellationDate.Date.Valid {
+		t.Fatalf("Wrong cancellation_date: %v", inApp.CancellationDate.Date)
 	}
 
 	validated, err := rcpt.Validate()
@@ -88,6 +95,47 @@ func TestParseAndValidate(t *testing.T) {
 
 	if validated.Environment != "Sandbox" {
 		t.Fatalf("Wrong environment: %s", validated.Environment)
+	}
+}
+
+func TestParseAndMarshalAndUnmarshal(t *testing.T) {
+	certDER, _ := pem.Decode([]byte(certificate))
+	cert, err := x509.ParseCertificate(certDER.Bytes)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rcpt, err := Parse(cert, receiptData)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rcptJSONString, err := json.Marshal(rcpt)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var rcptJSON map[string]interface{}
+	if err := json.Unmarshal(rcptJSONString, &rcptJSON); err != nil {
+		t.Fatal(err)
+	}
+
+	inApps, ok := rcptJSON["in_app"].([]interface{})
+	if !ok {
+		t.Fatalf("Wrong in_app: %v", rcptJSON["in_app"])
+	}
+
+	if len(inApps) < 2 {
+		t.Fatalf("Wrong in_app: %v", rcptJSON["in_app"])
+	}
+
+	inApp, ok := inApps[1].(map[string]interface{})
+	if !ok {
+		t.Fatalf("Wrong in_app[1]: %v", inApps[1])
+	}
+
+	if inApp["cancellation_date"] != nil {
+		t.Fatalf("Wrong cancellation_date: %s", inApp["cancellation_date"])
 	}
 }
 
