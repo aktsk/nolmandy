@@ -5,16 +5,15 @@ REVISION := $(shell git rev-parse --short HEAD)
 all: build
 
 setup:
-	go get golang.org/x/vgo
-	go get github.com/golang/lint/golint
-	go get golang.org/x/tools/cmd/goimports
-	go get github.com/tcnksm/ghr
-	go get github.com/Songmu/goxz/cmd/goxz
-	go get github.com/motemen/gobump/cmd/gobump
+	go install golang.org/x/lint/golint
+	go install golang.org/x/tools/cmd/goimports
+	go install github.com/tcnksm/ghr
+	go install github.com/Songmu/goxz/cmd/goxz
+	go install github.com/x-motemen/gobump/cmd/gobump
 
 test: lint
-	vgo test ./...
-	vgo test -race ./...
+	go test ./...
+	go test -race ./...
 
 lint: setup
 	golint ./...
@@ -23,8 +22,8 @@ fmt: setup
 	goimports -w .
 
 build:
-	cd cmd/nolmandy; vgo build -o ../../bin/$(NAME)
-	cd cmd/nolmandy-server; vgo build -o ../../bin/$(NAME)-server
+	cd cmd/nolmandy; go build -o ../../bin/$(NAME)
+	cd cmd/nolmandy-server; go build -o ../../bin/$(NAME)-server
 
 clean:
 	rm bin/$(NAME)
@@ -34,10 +33,10 @@ package: setup
 
 crossbuild: setup
 	goxz -pv=v${VERSION} -build-ldflags="-X main.GitCommit=${REVISION}" \
-        -arch=386,amd64 -d=./pkg/dist/v${VERSION} \
+        -arch=amd64 -d=./pkg/dist/v${VERSION} \
         -n ${NAME} ./cmd/nolmandy
 	goxz -pv=v${VERSION} -build-ldflags="-X main.GitCommit=${REVISION}" \
-        -arch=386,amd64 -d=./pkg/dist/v${VERSION} \
+        -arch=amd64 -d=./pkg/dist/v${VERSION} \
         -n ${NAME}-server ./cmd/nolmandy-server
 
 release: package
