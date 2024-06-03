@@ -1,6 +1,7 @@
 package receipt
 
 import (
+	"bytes"
 	"strconv"
 	"time"
 
@@ -22,14 +23,14 @@ func (nd date) MarshalJSON() ([]byte, error) {
 }
 
 func (nd *date) UnmarshalJSON(b []byte) error {
+	if bytes.Equal(b, []byte("null")) {
+		*nd = date(null.Time{})
+		return nil
+	}
+
 	dateString, err := strconv.Unquote(string(b))
 	if err != nil {
 		return err
-	}
-
-	if dateString == "" {
-		*nd = date(null.Time{})
-		return nil
 	}
 
 	t, err := time.Parse("2006-01-02 15:04:05 Etc/GMT", dateString)
@@ -52,14 +53,14 @@ func (nd dateMS) MarshalJSON() ([]byte, error) {
 }
 
 func (nd *dateMS) UnmarshalJSON(b []byte) error {
+	if bytes.Equal(b, []byte("null")) {
+		*nd = dateMS(null.Time{})
+		return nil
+	}
+
 	msString, err := strconv.Unquote(string(b))
 	if err != nil {
 		return err
-	}
-
-	if msString == "" {
-		*nd = dateMS(null.Time{})
-		return nil
 	}
 
 	sec, err := strconv.ParseInt(msString, 10, 64)
@@ -89,14 +90,14 @@ func (nd datePST) MarshalJSON() ([]byte, error) {
 }
 
 func (nd *datePST) UnmarshalJSON(b []byte) error {
+	if bytes.Equal(b, []byte("null")) {
+		*nd = datePST(null.Time{})
+		return nil
+	}
+
 	pstString, err := strconv.Unquote(string(b))
 	if err != nil {
 		return err
-	}
-
-	if pstString == "" {
-		*nd = datePST(null.Time{})
-		return nil
 	}
 
 	loc, err := time.LoadLocation("America/Los_Angeles")
