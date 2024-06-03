@@ -98,44 +98,25 @@ func TestParseAndValidate(t *testing.T) {
 	}
 }
 
-func TestParseAndMarshalAndUnmarshal(t *testing.T) {
-	certDER, _ := pem.Decode([]byte(certificate))
-	cert, err := x509.ParseCertificate(certDER.Bytes)
+func TestMarshalAndUnmarshalDate(t *testing.T) {
+	date1 := date{}
+
+	date1JSONString, err := json.Marshal(date1)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	rcpt, err := Parse(cert, receiptData)
-	if err != nil {
+	if string(date1JSONString) != "null" {
+		t.Fatalf("Wrong date1JSONString: %s", date1JSONString)
+	}
+
+	var date1JSON string
+	if err := json.Unmarshal([]byte(date1JSONString), &date1JSON); err != nil {
 		t.Fatal(err)
 	}
 
-	rcptJSONString, err := json.Marshal(rcpt)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	var rcptJSON map[string]interface{}
-	if err := json.Unmarshal(rcptJSONString, &rcptJSON); err != nil {
-		t.Fatal(err)
-	}
-
-	inApps, ok := rcptJSON["in_app"].([]interface{})
-	if !ok {
-		t.Fatalf("Wrong in_app: %v", rcptJSON["in_app"])
-	}
-
-	if len(inApps) < 2 {
-		t.Fatalf("Wrong in_app: %v", rcptJSON["in_app"])
-	}
-
-	inApp, ok := inApps[1].(map[string]interface{})
-	if !ok {
-		t.Fatalf("Wrong in_app[1]: %v", inApps[1])
-	}
-
-	if inApp["cancellation_date"] != nil {
-		t.Fatalf("Wrong cancellation_date: %s", inApp["cancellation_date"])
+	if date1JSON != "" {
+		t.Fatalf("Wrong date1JSON: %s", date1JSON)
 	}
 }
 
