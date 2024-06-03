@@ -13,7 +13,7 @@ type datePST null.Time
 
 func (nd date) MarshalJSON() ([]byte, error) {
 	if !null.Time(nd).Valid {
-		return nil, nil
+		return []byte("null"), nil
 	}
 	d := null.Time(nd).Time
 
@@ -43,7 +43,7 @@ func (nd *date) UnmarshalJSON(b []byte) error {
 
 func (nd dateMS) MarshalJSON() ([]byte, error) {
 	if !null.Time(nd).Valid {
-		return nil, nil
+		return []byte("null"), nil
 	}
 	d := null.Time(nd).Time
 
@@ -75,7 +75,7 @@ func (nd *dateMS) UnmarshalJSON(b []byte) error {
 
 func (nd datePST) MarshalJSON() ([]byte, error) {
 	if !null.Time(nd).Valid {
-		return nil, nil
+		return []byte("null"), nil
 	}
 	d := null.Time(nd).Time
 
