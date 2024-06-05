@@ -2,9 +2,12 @@ package receipt
 
 import (
 	"crypto/x509"
+	"encoding/json"
 	"encoding/pem"
 	"testing"
 	"time"
+
+	"github.com/guregu/null/v5"
 )
 
 func TestParseAndValidate(t *testing.T) {
@@ -28,7 +31,7 @@ func TestParseAndValidate(t *testing.T) {
 	}
 
 	creationDate := time.Unix(1518284220, 0)
-	date := time.Time(rcpt.CreationDate.Date)
+	date := null.Time(rcpt.CreationDate.Date).Time
 	if date.UTC() != creationDate.UTC() {
 		t.Fatalf("Wrong creation_date: %v", date)
 	}
@@ -48,7 +51,7 @@ func TestParseAndValidate(t *testing.T) {
 	}
 
 	purchaseDate := time.Unix(1503544635, 0)
-	date = time.Time(inApp.PurchaseDate.Date)
+	date = null.Time(inApp.PurchaseDate.Date).Time
 	if date.UTC() != purchaseDate.UTC() {
 		t.Fatalf("Wrong purchase_date: %v", date)
 	}
@@ -58,7 +61,7 @@ func TestParseAndValidate(t *testing.T) {
 	}
 
 	originalPurchaseDate := time.Unix(1500261436, 0)
-	date = time.Time(inApp.OriginalPurchaseDate.Date)
+	date = null.Time(inApp.OriginalPurchaseDate.Date).Time
 	if date.UTC() != originalPurchaseDate.UTC() {
 		t.Fatalf("Wrong original_purchase_date: %v", date)
 	}
@@ -72,9 +75,13 @@ func TestParseAndValidate(t *testing.T) {
 	}
 
 	originalPurchaseDate = time.Unix(1499441767, 0)
-	date = time.Time(rcpt.OriginalPurchaseDate.Date)
+	date = null.Time(rcpt.OriginalPurchaseDate.Date).Time
 	if date.UTC() != originalPurchaseDate.UTC() {
 		t.Fatalf("Wrong original_purchase_date: %v", date)
+	}
+
+	if inApp.CancellationDate.Date.Valid {
+		t.Fatalf("Wrong cancellation_date: %v", inApp.CancellationDate.Date)
 	}
 
 	validated, err := rcpt.Validate()
@@ -88,6 +95,28 @@ func TestParseAndValidate(t *testing.T) {
 
 	if validated.Environment != "Sandbox" {
 		t.Fatalf("Wrong environment: %s", validated.Environment)
+	}
+}
+
+func TestMarshalAndUnmarshalDate(t *testing.T) {
+	date1 := date{}
+
+	date1JSONString, err := json.Marshal(date1)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if string(date1JSONString) != "null" {
+		t.Fatalf("Wrong date1JSONString: %s", date1JSONString)
+	}
+
+	var date1JSON string
+	if err := json.Unmarshal([]byte(date1JSONString), &date1JSON); err != nil {
+		t.Fatal(err)
+	}
+
+	if date1JSON != "" {
+		t.Fatalf("Wrong date1JSON: %s", date1JSON)
 	}
 }
 

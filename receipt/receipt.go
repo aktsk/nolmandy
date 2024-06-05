@@ -9,6 +9,7 @@ import (
 
 	_ "github.com/aktsk/nolmandy/statik" // Need to load assets
 	"github.com/fullsailor/pkcs7"
+	"github.com/guregu/null/v5"
 	"github.com/rakyll/statik/fs"
 )
 
@@ -198,9 +199,9 @@ func parsePKCS(pkcs *pkcs7.PKCS7) (*Receipt, error) {
 
 	loc, _ := time.LoadLocation("Etc/GMT")
 	now := time.Now().In(loc)
-	receipt.RequestDate.Date = date(now)
-	receipt.RequestDate.DateMS = dateMS(now)
-	receipt.RequestDate.DatePST = datePST(now)
+	receipt.RequestDate.Date = date(null.TimeFrom(now))
+	receipt.RequestDate.DateMS = dateMS(null.TimeFrom(now))
+	receipt.RequestDate.DatePST = datePST(null.TimeFrom(now))
 
 	return &receipt, nil
 }
@@ -285,13 +286,17 @@ func parseInApp(data []byte) (*InApp, error) {
 	return &inApp, nil
 }
 
-func asn1ParseTime(data []byte) (time.Time, error) {
+func asn1ParseTime(data []byte) (null.Time, error) {
 	var str string
 	if _, err := asn1.Unmarshal(data, &str); err != nil {
-		return time.Time{}, err
+		return null.Time{}, err
 	}
-	if str == "" {
-		return time.Time{}, nil
+	if str == "" || str == "0001-01-01T00:00:00Z" {
+		return null.Time{}, nil
 	}
-	return time.Parse(time.RFC3339, str)
+	t, err := time.Parse(time.RFC3339, str)
+	if err != nil {
+		return null.Time{}, err
+	}
+	return null.TimeFrom(t), nil
 }
