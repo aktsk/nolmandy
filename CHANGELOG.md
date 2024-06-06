@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.4](https://github.com/aktsk/nolmandy/compare/v0.1.3...v0.1.4) (2024-06-05)
+
+* Fix #25 [#26](https://github.com/aktsk/nolmandy/pull/26) ([azonti](https://github.com/azonti))
+
 ## [v0.1.3](https://github.com/aktsk/nolmandy/compare/v0.1.2...v0.1.3) (2023-11-20)
 
 * update AppleIncRootCertificate.cer [#24](https://github.com/aktsk/nolmandy/pull/24) ([azonti](https://github.com/azonti))
