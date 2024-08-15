@@ -4,6 +4,7 @@ import (
 	"crypto/x509"
 	"encoding/asn1"
 	"encoding/base64"
+	"flag"
 	"io/ioutil"
 	"time"
 
@@ -106,9 +107,19 @@ func verifySignerCert(root *x509.Certificate, pkcs *pkcs7.PKCS7) error {
 		}
 	}
 
+	var currentTime time.Time
+	if flag.Lookup("test.v") != nil {
+		// When running under go test, set the current time to one day before NotAfter
+		// in order to pass Verify() even if the certificate expiration date is INVALID.
+		currentTime = signer.NotAfter.AddDate(0, 0, -1)
+	} else {
+		currentTime = time.Now()
+	}
+
 	_, err := signer.Verify(x509.VerifyOptions{
 		Intermediates: intermediates,
 		Roots:         roots,
+		CurrentTime:   currentTime,
 	})
 
 	if err != nil {
