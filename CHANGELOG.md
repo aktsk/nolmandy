@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.5](https://github.com/aktsk/nolmandy/compare/v0.1.4...v0.1.5) (2024-08-15)
+
+* Change current time when running under go test [#29](https://github.com/aktsk/nolmandy/pull/29) ([mizzy](https://github.com/mizzy))
+* Bump google.golang.org/protobuf from 1.28.1 to 1.33.0 [#27](https://github.com/aktsk/nolmandy/pull/27) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump github.com/miekg/dns from 1.0.0 to 1.1.25 [#28](https://github.com/aktsk/nolmandy/pull/28) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v0.1.4](https://github.com/aktsk/nolmandy/compare/v0.1.3...v0.1.4) (2024-06-05)
 
 * Fix #25 [#26](https://github.com/aktsk/nolmandy/pull/26) ([azonti](https://github.com/azonti))
